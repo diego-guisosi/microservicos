@@ -1,5 +1,5 @@
 # Cadastro de Campanhas e Clientes
-Este repositório possui a implementação de um cadastro de Campanhas e Clientes desenvolvido com Spring Boot, Spring Data JPA, Base H2 em memória, Tomcat, REST, AMQP RabbitMQ e alguns serviços do Spring Cloud.
+Este repositório possui a implementação de um cadastro de Campanhas e Clientes desenvolvido com Spring Boot, Spring Data JPA, Base H2 em memória, Tomcat, REST, AMQP RabbitMQ e alguns serviços do Spring Cloud. Além disso, possui também os fontes de um projeto criado para procesamento de streams.
 # Premissas
 Antes de descrever a arquitetura e os frameworks que utilizei durante o desenvolvimento, gostaria de esclarecer que assumi algumas premissas:
 1. Disponibilidade de um broker para troca de mensagens entre os módulos (RabbitMQ rodando em localhost na porta padrão)
@@ -18,3 +18,31 @@ Serviço responsável pelo cadastro dos clientes. Além de se registrar como um 
 Base de dados dos microserviços campanha-service e cliente-service, rodando com configurações default. Utiliza o pool de datasources do Tomcat para gerenciamento das conexões, que, nos valores default, suportam até 100 conexões de banco ao mesmo tempo. Este número já parace ser suficiente para atender ao requisito de não funcional de requisições por segundo.
 ## Tomcat embarcado
 Todos os serviços rodam com o Tomcat em suas configurações padrões. Para os serviços de cadastro de clientes e cadastro de campanhas, que têm como requisito o processamento de até 100 requisições por segundo, as configurações padrões atendem (maxThreads têm o valor default de 200).  
+# Resposta da Questão 04 - Deadlocks
+Deadlock é um problema de travamento de threads, que ocorre em cenário concorrente, devido a impossibilidade de obtenção do lock de determinado objeto.
+Um cenário típico em que isso ocorre: quando uma thread depende do lock de mais do que um objeto para seguir execução, mas uma segunda thread não libera o lock de um dos objetos que a primeira thread depende, pois essa segunda thread também depende da obtenção do lock de um objeto que a primeira thread não libera.
+Exemplificação do cenário descrito anteriormente, considerando a existência das threads T1 e T2 e dos objetos O1 e O2.
+1. T1 adquire o lock de O1
+2. T2 adquire o lock de O2
+3. T1 tenta adquirir o lock de O2, mas não tem sucesso, pois T2 já possui o lock deste objeto
+4. T2 tenta adquirir o lock de O1, mas não tem sucesso, pois T1 já possui o lock deste objeto
+5. Neste ponto, ambas as threads entram em deadlock, pois uma depende da obtenção do lock de um objeto que a outra thread possui.
+
+O cenário anterior poderia ter sido evitado se os locks dos objetos fossem obtidos sempre na mesma ordem:
+
+1. T1 adquire o lock de O1
+2. T2 tenta obter o lock de O1, mas entra em espera, pois T1 já possui o lock de O1
+3. T1 adquire o lock de O2
+4. T1 realiza o processamento necessário
+5. T1 libera o lock de O2
+6. T1 libera o lock de O1
+7. T2 adquire sai da espera e adquire o lock de O1
+8. T2 adquire o lock de O2
+9. T2 realiza o processamento necessário
+10. T2 libera o lock de O2
+11. T2 libera o lock de O1
+
+# Resposta da Questão 05 - Comparativo entre Streams e Parallel Streams
+Tanto a Stream quanto o Parallel Stream tem a finalidade de possibilitar o uso declarativo das coleções do Java, em vez de iterativo. 
+A diferença básica entre as duas é que a Stream é processada serialmente, enquanto a Parallel Stream é subdividida em múltiplas Streams pelo Fork/Join Framework, que então são processadas paralelamente (se não houver interferência de alguma operação de agregação ou redução).
+Deve-se utilizar Parallel Stream com cautela, pois nem sempre é mais rápido processar a coleção em paralelo do que serial. O custo para o JVM de gerenciar as threads pode ser maior do que o de processar a coleção serialmente. Além disso, se a aplicação estiver rodando em ambiente Multi-Thread (como um web container, por exemplo), o Parallel Stream adicionará uma segunda camada de paralelismo.
