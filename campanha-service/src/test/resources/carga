@@ -1,0 +1,15 @@
+curl -i -X POST -H "Content-Type:application/json" -d '{"idTimeCoracao":"1", "nome":"CampanhaATime1", "inicioDataVigencia":"2017-09-19", "fimDataVigencia":"2017-09-22"}' localhost:8082/campanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"idTimeCoracao":"1", "nome":"CampanhaBTime1", "inicioDataVigencia":"2017-09-19", "fimDataVigencia":"2017-09-22"}' localhost:8082/campanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"idTimeCoracao":"1", "nome":"CampanhaCTime1", "inicioDataVigencia":"2017-09-19", "fimDataVigencia":"2017-09-23"}' localhost:8082/campanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"idTimeCoracao":"1", "nome":"CampanhaDTime1", "inicioDataVigencia":"2017-09-19", "fimDataVigencia":"2017-09-23"}' localhost:8082/campanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"idTimeCoracao":"2", "nome":"CampanhaATime2", "inicioDataVigencia":"2017-09-19", "fimDataVigencia":"2017-09-22"}' localhost:8082/campanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"idTimeCoracao":"2", "nome":"CampanhaBTime2", "inicioDataVigencia":"2017-09-19", "fimDataVigencia":"2017-09-22"}' localhost:8082/campanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"idTimeCoracao":"2", "nome":"CampanhaCTime2", "inicioDataVigencia":"2017-09-19", "fimDataVigencia":"2017-09-23"}' localhost:8082/campanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"idTimeCoracao":"2", "nome":"CampanhaDTime2", "inicioDataVigencia":"2017-09-19", "fimDataVigencia":"2017-09-23"}' localhost:8082/campanha
+
+curl -i -X POST -H "Content-Type:application/json" -d '{"clienteId":"1", "campanhaId":"1"}' localhost:8082/associacaoCampanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"clienteId":"1", "campanhaId":"2"}' localhost:8082/associacaoCampanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"clienteId":"2", "campanhaId":"2"}' localhost:8082/associacaoCampanha
+curl -i -X POST -H "Content-Type:application/json" -d '{"clienteId":"2", "campanhaId":"3"}' localhost:8082/associacaoCampanha
+
+curl -i -X POST -H "Content-Type:application/json" -d '{"nome":"Cliente1", "email":"cliente1@gmail.com","dataNascimento":"2010-09-08","idTimeCoracao":"1"}' localhost:8080/cliente
