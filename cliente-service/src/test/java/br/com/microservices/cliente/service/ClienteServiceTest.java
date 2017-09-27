@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,7 +29,9 @@ import br.com.microservices.cliente.repository.ClienteRepository;
 @DataJpaTest
 public class ClienteServiceTest {
 	
-	@MockBean
+	
+	@MockBean(value = {CampanhaServiceClient.class})
+	@Qualifier("br.com.microservices.cliente.client.CampanhaServiceClient")
 	private CampanhaServiceClient client;
 	
 	@Autowired
@@ -36,7 +39,7 @@ public class ClienteServiceTest {
 	
 	@Autowired
 	private ClienteService service;
-
+	
 	/**
 	 * Método testa o cadastro de novo cliente, quando seu time do coração possui campanhas ativas.
 	 * 

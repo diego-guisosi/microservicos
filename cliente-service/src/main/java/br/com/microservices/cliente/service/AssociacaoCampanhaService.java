@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import br.com.microservices.cliente.client.CampanhaServiceClient;
@@ -17,7 +18,9 @@ public class AssociacaoCampanhaService {
 	
 	private static Logger log = Logger.getLogger(AssociacaoCampanhaService.class);
 	
+	//Anotado com Qualifier para compatibilidade com os testes
 	@Autowired
+	@Qualifier("br.com.microservices.cliente.client.CampanhaServiceClient")
 	private CampanhaServiceClient client;
 	
 	@Autowired
